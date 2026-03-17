@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Quiz App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        #timer {
+            text-align: center;
+            font-size: 18px;
+            color: red;
+            font-weight: bold;
+        }
+
+        #warning {
+            text-align: center;
+            color: orange;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+
+        .question p {
+            margin: 0 0 5px;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        label {
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4facfe;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #007bff;
+            transform: scale(1.05);
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Quiz App (10 sec)</h2>
+
+    <div id="timer">Time left: 10</div>
+    <div id="warning"></div>
+
+    <form id="quizForm">
+
+        <div class="question">
+            <p>1. What is 2 + 2?</p>
+            <label><input type="radio" name="q1" value="a">3</label><br>
+            <label><input type="radio" name="q1" value="b">4</label><br>
+            <label><input type="radio" name="q1" value="c">5</label>
+        </div>
+
+        <div class="question">
+            <p>2. Capital of India?</p>
+            <label><input type="radio" name="q2" value="a">Mumbai</label><br>
+            <label><input type="radio" name="q2" value="b">Delhi</label><br>
+            <label><input type="radio" name="q2" value="c">Chennai</label>
+        </div>
+
+        <div class="question">
+            <p>3. What is 5 × 2?</p>
+            <label><input type="radio" name="q3" value="a">10</label><br>
+            <label><input type="radio" name="q3" value="b">8</label><br>
+            <label><input type="radio" name="q3" value="c">12</label>
+        </div>
+
+        <div class="question">
+            <p>4. HTML stands for?</p>
+            <label><input type="radio" name="q4" value="a">Hyper Text Markup Language</label><br>
+            <label><input type="radio" name="q4" value="b">High Text Machine Language</label><br>
+            <label><input type="radio" name="q4" value="c">Hyper Tool Multi Language</label>
+        </div>
+
+        <div class="question">
+            <p>5. What is 10 ÷ 2?</p>
+            <label><input type="radio" name="q5" value="a">2</label><br>
+            <label><input type="radio" name="q5" value="b">5</label><br>
+            <label><input type="radio" name="q5" value="c">8</label>
+        </div>
+
+        <button type="button" onclick="submitQuiz()">Submit</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    let timeLeft = 10;
+    let timerDisplay = document.getElementById("timer");
+    let warning = document.getElementById("warning");
+
+    let answers = {
+        q1: "b",
+        q2: "b",
+        q3: "a",
+        q4: "a",
+        q5: "b"
+    };
+
+    let timer = setInterval(function () {
+        timeLeft--;
+        timerDisplay.innerText = "Time left: " + timeLeft;
+
+        if (timeLeft === 5) {
+            warning.innerText = "Only 5 seconds remaining!";
+        }
+
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            submitQuiz();
+        }
+    }, 1000);
+
+    function submitQuiz() {
+        clearInterval(timer);
+
+        let score = 0;
+        let form = document.forms["quizForm"];
+
+        for (let q in answers) {
+            if (form[q].value === answers[q]) {
+                score++;
+            }
+        }
+
+        document.getElementById("result").innerText =
+            "Your Score: " + score + " / 5";
+
+        // Disable all options
+        let inputs = document.querySelectorAll("input");
+        inputs.forEach(input => input.disabled = true);
+
+        // Disable button
+        document.querySelector("button").disabled = true;
+    }
+</script>
+
+</body>
+</html>
